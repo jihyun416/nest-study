@@ -16,21 +16,22 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
-import { CreateCatDto, ListAllEntities, UpdateCatDto } from './cat.dto';
+import { CreateCatDto, ListAllEntities, UpdateCatDto } from './dto/cat.dto';
+import { Cat } from './interfaces/cat.interface';
+import { CatsService } from './cats.service';
 
 @Controller('cats')
 export class CatsController {
+  constructor(private catsService: CatsService) {}
+
   @Post()
-  create(@Body() createCatDto: CreateCatDto) {
-    return 'This action adds a new cat';
+  async create(@Body() createCatDto: CreateCatDto) {
+    this.catsService.create(createCatDto);
   }
 
   @Get()
-  findAll(@Res({ passthrough: true }) res: Response) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    res.status(HttpStatus.OK);
-    return [];
+  async findAll(): Promise<Cat[]> {
+    return this.catsService.findAll();
   }
 
   @Get(':id')
