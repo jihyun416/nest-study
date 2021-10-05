@@ -9,10 +9,18 @@ import { AppService } from './app.service';
 import { AccountController } from './account/account.controller';
 import { CatsModule } from './cats/cats.module';
 import { logger } from './logger.middleware';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './exception/http-exception.filter';
 
 @Module({
   controllers: [AppController, AccountController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
   imports: [CatsModule],
 })
 export class AppModule implements NestModule {
