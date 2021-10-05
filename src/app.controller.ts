@@ -4,8 +4,10 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AppService } from './app.service';
+import { User } from './decorator/user.decorator';
 
 @Controller()
 export class AppController {
@@ -14,6 +16,18 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('user')
+  async findUser(
+    @User(new ValidationPipe({ validateCustomDecorators: true })) user: any,
+  ) {
+    console.log(user);
+  }
+
+  @Get('firstname')
+  async findUserFirstName(@User('firstName') firstName: string) {
+    console.log(`Hello ${firstName}`);
   }
 
   @Get('forbidden')
