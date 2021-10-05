@@ -12,13 +12,19 @@ import {
   Put,
   Delete,
   UseFilters,
+  ParseIntPipe,
+  HttpStatus,
+  UsePipes,
+  ValidationPipe,
+  Query,
+  DefaultValuePipe,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { CreateCatDto, UpdateCatDto } from './dto/cat.dto';
 import { Cat } from './interfaces/cat.interface';
 import { CatsService } from './cats.service';
 import { HttpExceptionFilter } from '../exception/http-exception.filter';
-import { ForbiddenException } from '../exception/forbidden.exception';
 
 @UseFilters(HttpExceptionFilter)
 @Controller('cats')
@@ -27,16 +33,26 @@ export class CatsController {
 
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {
-    throw new ForbiddenException();
+    this.catsService.create(createCatDto);
   }
 
   @Get()
-  async findAll(): Promise<Cat[]> {
+  async findAll(
+    @Query('activeOnly', new DefaultValuePipe(false), ParseBoolPipe)
+    activeOnly: boolean,
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
+  ): Promise<Cat[]> {
     return this.catsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ) {
     return `This action returns a #${id} cat`;
   }
 
