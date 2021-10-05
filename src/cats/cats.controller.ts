@@ -44,11 +44,7 @@ export class CatsController {
   }
 
   @Get()
-  async findAll(
-    @Query('activeOnly', new DefaultValuePipe(false), ParseBoolPipe)
-    activeOnly: boolean,
-    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
-  ): Promise<Cat[]> {
+  async findAll(): Promise<Cat[]> {
     return this.catsService.findAll();
   }
 
