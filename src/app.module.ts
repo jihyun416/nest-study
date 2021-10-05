@@ -10,9 +10,10 @@ import { AppService } from './app.service';
 import { AccountController } from './account/account.controller';
 import { CatsModule } from './cats/cats.module';
 import { logger } from './logger.middleware';
-import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './exception/http-exception.filter';
 import { RolesGuard } from './auth/roles.guard';
+import { LoggingInterceptor } from './interceptor/logging.interceptor';
 
 @Module({
   controllers: [AppController, AccountController],
@@ -29,6 +30,10 @@ import { RolesGuard } from './auth/roles.guard';
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
     },
   ],
   imports: [CatsModule],

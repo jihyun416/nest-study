@@ -21,6 +21,7 @@ import {
   ParseBoolPipe,
   UseGuards,
   SetMetadata,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { CreateCatDto, UpdateCatDto } from './dto/cat.dto';
