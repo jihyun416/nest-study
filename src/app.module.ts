@@ -14,6 +14,10 @@ import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './exception/http-exception.filter';
 import { RolesGuard } from './auth/roles.guard';
 import { LoggingInterceptor } from './interceptor/logging.interceptor';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { getConnectionOptions } from 'typeorm';
+import { UsersModule } from './users/users.module';
+import { AuthorModule } from './author/author.module';
 
 @Module({
   controllers: [AppController, AccountController],
@@ -36,7 +40,17 @@ import { LoggingInterceptor } from './interceptor/logging.interceptor';
       useClass: LoggingInterceptor,
     },
   ],
-  imports: [CatsModule],
+  imports: [
+    TypeOrmModule.forRootAsync({
+      useFactory: async () =>
+        Object.assign(await getConnectionOptions(), {
+          autoLoadEntities: true,
+        }),
+    }),
+    CatsModule,
+    UsersModule,
+    AuthorModule,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
