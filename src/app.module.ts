@@ -18,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 import { UsersModule } from './users/users.module';
 import { AuthorModule } from './author/author.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   controllers: [AppController, AccountController],
@@ -41,6 +42,7 @@ import { AuthorModule } from './author/author.module';
     },
   ],
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
         Object.assign(await getConnectionOptions(), {
