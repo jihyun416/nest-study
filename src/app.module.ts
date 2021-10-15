@@ -22,6 +22,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { EncryptController } from './encrypt/encrypt.controller';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   controllers: [AppController, AccountController, EncryptController],
@@ -44,6 +45,10 @@ import { EncryptController } from './encrypt/encrypt.controller';
       useClass: JwtAuthGuard,
     },
     {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+    {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
     },
@@ -55,6 +60,10 @@ import { EncryptController } from './encrypt/encrypt.controller';
         Object.assign(await getConnectionOptions(), {
           autoLoadEntities: true,
         }),
+    }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
     }),
     CatsModule,
     UsersModule,
