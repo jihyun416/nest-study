@@ -21,9 +21,10 @@ import { AuthorModule } from './author/author.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { EncryptController } from './encrypt/encrypt.controller';
 
 @Module({
-  controllers: [AppController, AccountController],
+  controllers: [AppController, AccountController, EncryptController],
   providers: [
     AppService,
     {
