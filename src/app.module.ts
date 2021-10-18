@@ -23,6 +23,9 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { EncryptController } from './encrypt/encrypt.controller';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+import { RecipeModule } from './recipe/recipe.module';
 
 @Module({
   controllers: [AppController, AccountController, EncryptController],
@@ -61,6 +64,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
           autoLoadEntities: true,
         }),
     }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+    }),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 10,
@@ -69,6 +76,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     UsersModule,
     AuthorModule,
     AuthModule,
+    RecipeModule,
   ],
 })
 export class AppModule implements NestModule {
