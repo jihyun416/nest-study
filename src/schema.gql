@@ -18,6 +18,7 @@ type Mutation {
   createRecipe(createRecipeInput: CreateRecipeInput!): Recipe!
   removeRecipe(id: Int!): Recipe!
   updateRecipe(updateRecipeInput: UpdateRecipeInput!): Recipe!
+  upvotePost(upvotePostData: UpvotePostInput!): Post!
 }
 
 type Post {
@@ -43,4 +44,8 @@ input UpdateRecipeInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input UpvotePostInput {
+  postId: Float!
 }

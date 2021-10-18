@@ -9,4 +9,10 @@ export class PostService {
   async findByAuthorId(authorId: number): Promise<Post[]> {
     return await this.postRepository.find({ authorId: authorId });
   }
+
+  async upvoteById(postId: number): Promise<Post> {
+    const post = await this.postRepository.findOne({ id: postId });
+    post.votes = post.votes + 1;
+    return await this.postRepository.save(post);
+  }
 }
