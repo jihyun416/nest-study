@@ -17,7 +17,6 @@ import { LoggingInterceptor } from './interceptor/logging.interceptor';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 import { UsersModule } from './users/users.module';
-import { AuthorModule } from './author/author.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -26,6 +25,8 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { RecipeModule } from './recipe/recipe.module';
+import { AuthorModule } from './author/author.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   controllers: [AppController, AccountController, EncryptController],
@@ -38,18 +39,6 @@ import { RecipeModule } from './recipe/recipe.module';
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
     },
     {
       provide: APP_INTERCEPTOR,
@@ -77,6 +66,7 @@ import { RecipeModule } from './recipe/recipe.module';
     AuthorModule,
     AuthModule,
     RecipeModule,
+    PostModule,
   ],
 })
 export class AppModule implements NestModule {

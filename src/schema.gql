@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Author {
+  firstName: String
+  id: Int!
+  lastName: String
+  posts: [Post!]!
+}
+
 input CreateRecipeInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -13,7 +20,17 @@ type Mutation {
   updateRecipe(updateRecipeInput: UpdateRecipeInput!): Recipe!
 }
 
+type Post {
+  authorId: Float!
+  id: Int!
+  title: String!
+  votes: Int
+}
+
 type Query {
+  author(id: Int!): Author!
+  authors: [Author!]!
+  findAuthor(firstName: String, id: Float): [Author!]!
   recipe(id: Int!): Recipe!
 }
 
